@@ -44,26 +44,18 @@ export class Dispenser extends Entity {
     this.addComponent(new Animator())
     this.getComponent(Animator).addClip(this.idleAnim)
     this.getComponent(Animator).addClip(this.buyAnim)
+    this.getComponent(Animator).addClip(this.buttonAnim)
     this.idleAnim.play()
-
-    this.eventName = eventName
-
-    let button = new Entity()
-    button.addComponent(new GLTFShape('models/poap/POAP_button.glb'))
-    button.addComponent(new Animator())
-    button.getComponent(Animator).addClip(this.buttonAnim)
-    button.setParent(this)
-    button.addComponent(
+    this.addComponent(
       new OnPointerDown(
         (e) => {
-          button.getComponent(Animator).getClip('Action').play()
-          //sceneMessageBus.emit('activatePoap', {})
           this.makeTransaction(poapServer, eventName)
         },
-        { hoverText: 'Get Attendance Token' }
+        { hoverText: 'Get DOUBLE Token' }
       )
     )
-    engine.addEntity(button)
+
+    this.eventName = eventName
 
     if (UIdisplayName) this.UIdisplayName = UIdisplayName
     if (imageSizeX) this.imageSizeX = imageSizeX
@@ -163,8 +155,8 @@ export class Dispenser extends Entity {
 
       return
     }
+    
     this.alreadyAttempted = true
-
     const realm = await getCurrentRealm()
 
     const url = `https://${poapServer}/claim/${event}`
@@ -173,7 +165,7 @@ export class Dispenser extends Entity {
     let body = JSON.stringify({
       address: userData.publicKey,
       catalyst: realm.domain,
-      room: realm.layer,
+      room: realm.room,
     })
 
     try {
@@ -191,9 +183,9 @@ export class Dispenser extends Entity {
           this.imageSizeX,
           this.imageSizeY
         )
-
         sceneMessageBus.emit('activatePoap', {})
       } else {
+        this.alreadyAttempted = false
         PlayCloseSound()
         UI.displayAnnouncement(`Oops, there was an error: "${data.error}"`, 3)
       }

@@ -1,16 +1,16 @@
 {
   "display": {
-    "title": "interactive-text",
+    "title": "poap : no war",
     "favicon": "favicon_asset"
   },
   "contact": {
-    "name": "author-name",
+    "name": "DOUBLE",
     "email": ""
   },
-  "owner": "",
+  "owner": "0x8B81e64b6d4ebE2EC0f155df28c54aE2F20189DD",
   "scene": {
-    "parcels": ["-133,-40"],
-    "base": "-133,-40"
+    "parcels": ["-22,-142"],
+    "base": "-22,-142"
   },
   "communications": {
     "type": "webrtc",
